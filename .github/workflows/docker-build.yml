@@ -1,30 +1,32 @@
-name: Docker Build CI
+name: Docker Build & Push CI
 
-# Tetikleyici: 'main' dalına her push yapıldığında bu iş başlasın
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
-  build-test:
-    runs-on: ubuntu-latest # GitHub'ın Linux sunucusunda çalış
+  build-push:
+    runs-on: ubuntu-latest
 
     steps:
-      # 1. Kodunu sunucuya çek
-      - name: Kodları Çek (Checkout)
+      - name: Kodları Çek
         uses: actions/checkout@v3
 
-      # 2. Docker Build aracını kur
       - name: Docker Buildx Kurulumu
         uses: docker/setup-buildx-action@v2
 
-      # 3. İmajı Build Et (Test)
-      # push: false diyoruz çünkü şimdilik sadece "build oluyor mu" diye bakıyoruz.
-      - name: Build Test
+      # YENİ EKLENEN KISIM: Docker Hub'a Giriş Yap
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # GÜNCELLENEN KISIM: Build ve Push
+      - name: Build and Push
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: false
-          tags: simple-docker-nginx:latest
+          push: true  # Artık true yaptık!
+          # Aşağıdaki 'kullaniciadin' kısmını dinamik olarak secret'tan alacak
+          tags: ${{ secrets.DOCKER_USERNAME }}/simple-docker-nginx:latest
