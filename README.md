@@ -29,6 +29,6 @@ docker rm my-running-app
 ```
 
 # Simple Docker Nginx
-![Docker Build CI](https://github.com/KULLANICI_ADIN/simple-docker-nginx/actions/workflows/docker-build.yml/badge.svg)
+![Docker Build CI](https://github.com/imbilalyilmaz/simple-docker-nginx/actions/workflows/docker-build.yml/badge.svg)
 
 Bu proje, temel DevOps pratikleri kapsamında **Docker** ve **Konteynerizasyon** mantığını anlamak amacıyla oluşturulmuştur.
